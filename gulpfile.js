@@ -14,10 +14,3 @@ gulp.task('sass', function () {
 gulp.task('sass:watch', function () {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
-// 
-// function defaultTask(cb) {
-//   // place code for your default task here
-//   cb();
-// }
-//
-// exports.default = defaultTask
