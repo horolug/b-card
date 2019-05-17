@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var scsslint = require('gulp-scss-lint');
 
 sass.compiler = require('node-sass');
 
@@ -11,10 +12,10 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./css'));
 });
 
-gulp.task('sass:watch', function () {
-  gulp.watch('./sass/**/*.scss', ['sass']);
+gulp.task('scss-lint', function() {
+  return gulp.src('./sass/**/*.scss')
+    .pipe(scsslint());
 });
-
 
 gulp.task('watch', function() {
   gulp.watch('./sass/**/*.scss', gulp.series('sass'));

@@ -1,0 +1,9 @@
+@import 'sizes';
+
+.nav_list{
+  display: flex;
+}
+
+.nav_list_item{
+  padding: $base-padding;
+}
