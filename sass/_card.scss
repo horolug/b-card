@@ -1,3 +1,11 @@
 .card{
   height: 100vh;
+  // display: flex;
+  justify-content: center;
+}
+
+.brand{
+  border: 2px solid green;
+  height: 5vh;
+  flex-grow: 1;
 }
