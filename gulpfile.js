@@ -3,6 +3,8 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var scsslint = require('gulp-scss-lint');
+var server = require('gulp-webserver');
+
 
 sass.compiler = require('node-sass');
 
@@ -15,6 +17,15 @@ gulp.task('sass', function () {
 gulp.task('scss-lint', function() {
   return gulp.src('./sass/**/*.scss')
     .pipe(scsslint());
+});
+
+gulp.task('server', function() {
+  gulp.src('app')	// <-- your app folder
+    .pipe(server({
+      livereload: true,
+      open: true,
+      port: 6000	// set a port to avoid conflicts with other local apps
+    }));
 });
 
 gulp.task('watch', function() {
