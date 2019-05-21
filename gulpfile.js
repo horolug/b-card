@@ -3,7 +3,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-dart-sass');
 // var scsslint = require('gulp-scss-lint');
-// var server = require('gulp-webserver');
+var webserver = require('gulp-webserver');
 
 
 // sass.compiler = require('node-sass');
@@ -27,14 +27,13 @@ gulp.task('lint-css', function lintCssTask() {
     }));
 });
 
-// gulp.task('server', function() {
-//   gulp.src('app')	// <-- your app folder
-//     .pipe(server({
-//       livereload: true,
-//       open: true,
-//       port: 6000	// set a port to avoid conflicts with other local apps
-//     }));
-// });
+gulp.task('webserver', function() {
+  gulp.src('app')
+    .pipe(webserver({
+      livereload: true,
+      open: true,
+    }));
+});
 
 gulp.task('watch', function() {
   gulp.watch('./sass/**/*.scss', gulp.series('sass'));
