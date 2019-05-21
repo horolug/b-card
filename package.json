@@ -1,8 +1,8 @@
 {
   "name": "b-card",
   "version": "1.0.0",
-  "description": "Business card page",
-  "main": "index.html",
+  "description": "Business card type page",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/horolug/b-card.git"
   },
-  "author": "Aleksandr Gulbickij",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/horolug/b-card/issues"
@@ -18,9 +18,8 @@
   "homepage": "https://github.com/horolug/b-card#readme",
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-sass": "^4.0.2",
-    "gulp-scss-lint": "^1.0.0",
-    "gulp-webserver": "^0.9.1",
-    "node-sass": "^4.12.0"
+    "gulp-dart-sass": "^0.9.1",
+    "gulp-stylelint": "^9.0.0",
+    "stylelint": "^10.0.1"
   }
 }
