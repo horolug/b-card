@@ -32,9 +32,34 @@
   <div>
     <div id="home" class="card">
       <h1>Hero message</h1>
-      <canvas id="canvas" width="400" height="300">
+
+      <div class="network">
+          <svg version="1.1"
+            id="network"
+            class="network-svg"
+            baseProfile="full"
+            width="800" height="800"
+            xmlns="http://www.w3.org/2000/svg">
+
+           <!-- <line class="node-connector" x1="10" x2="50" y1="110" y2="150" /> -->
+           <!-- <circle class="node" cx="25" cy="75" r="6"/> -->
+
+           <circle class="node" cx="8" cy="15" r="4"/>
+
+           <line class="node-connector" x1="8" x2="56" y1="15" y2="15" />
+
+           <circle class="node" cx="56" cy="15" r="4"/>
+
+           <line class="node-connector" x1="56" x2="37" y1="15" y2="48" />
+
+           <circle class="node" cx="37" cy="48" r="4"/>
+
+           <line class="node-connector" x1="37" x2="8" y1="48" y2="15" />
+          </svg>
+       </div>
+      <!-- <canvas id="canvas" width="400" height="300">
         This text is displayed if your browser does not support HTML5 Canvas.
-      </canvas>
+      </canvas> -->
     </div>
     <div id="about" class="card">
       <p>Nulla efficitur convallis hendrerit. Sed convallis cursus nunc quis vulputate. Nam ut suscipit urna. Pellentesque sit amet ipsum dapibus, commodo elit ac, congue velit. Mauris consectetur dictum dolor. In eget purus justo. Fusce eu dui magna. Vivamus consequat viverra tortor, vel mollis sapien mattis id. Nullam pretium arcu enim, vitae posuere purus rutrum et. Donec tincidunt in purus quis interdum. Pellentesque tincidunt, tellus ut vehicula ultrices, dolor nulla semper risus, elementum aliquam urna enim et sapien. Integer tempus nulla libero, ac sagittis nisl euismod quis.
