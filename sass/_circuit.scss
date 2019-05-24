@@ -1,0 +1,26 @@
+g{
+  position: relative;
+}
+
+g *{
+  position: absolute;
+}
+
+.chip{
+  fill: grey;
+  stroke: orange;
+  stroke-width: 1;
+}
+
+.chip_inside{
+  fill: black;
+  stroke: orange;
+  stroke-width: 1;
+}
+
+.chip_leg_a{
+  fill: orange;
+}
+.chip_leg_b{
+  fill: orange;
+}

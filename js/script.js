@@ -26,7 +26,7 @@ function createCircle( x, y ){
   const svgContainer = document.getElementById("network");
   let myCircle = document.createElementNS(svgNS,"circle");
   myCircle.setAttributeNS(null,"class","node");
-  myCircle.setAttributeNS(null,"r", 4);
+  myCircle.setAttributeNS(null,"r", 2);
   myCircle.setAttributeNS(null,"cx", x);
   myCircle.setAttributeNS(null,"cy", y);
   svgContainer.appendChild(myCircle);
@@ -124,9 +124,16 @@ function createNodes() {
       console.log("second loop", k);
       console.log("x val", sectors[j]['xNodes'][k]);
       console.log("y val", sectors[j]['yNodes'][k]);
-      createCircle(sectors[j]['xNodes'][k], sectors[j]['yNodes'][k]);
+      const x1 =  sectors[j]['xNodes'][k];
+      const y1 = sectors[j]['yNodes'][k];
+
+      createCircle(x1, y1);
+
+      let x2 = "";
+      let y2 = "";
+
     }
   }
 }
 
-createNodes();
+// createNodes();
