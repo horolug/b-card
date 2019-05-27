@@ -3,12 +3,12 @@ function createMicrochip(){
   // 2 rectangles
   // 1 line of text
   // 2 or 4 sets of microchip legs
-  // Width or height should be always dividable by 16
+  // Width or height - sizedif should be always dividable by 16
   const xAxis = 200;
   const yAxis = 250;
-  const chipWidth = 64;
-  const chipHeight = 64;
-  const sizeDiff = 12;
+  const chipWidth = 60;
+  const chipHeight = 60;
+  const sizeDiff = 10;
   const innerWidth = chipWidth - (sizeDiff*2);
   const innerHeight = chipHeight - (sizeDiff*2);
   const radius = 8;
@@ -55,34 +55,30 @@ function createMicrochip(){
   chipText.setAttributeNS(null,"font-size", textFontSize);
   chipText.setAttributeNS(null,"fill", "orange");
   chipText.textContent = "A";
-  // font-size="20" fill="orange"
 
-
+  chipLegs( chipContainer, chipWidth, chipHeight );
 
   chipContainer.appendChild(outerSection);
   chipContainer.appendChild(innerSection);
   chipContainer.appendChild(chipText);
-
-  chipLegs( chipContainer, chipWidth, chipHeight );
-
   svgContainer.appendChild(chipContainer);
 }
 
-function chipLegs( chipContainer, chipWidth ){
-  // <rect x="92" class="chip_leg_a" width="4" height="10" />
-  // <rect x="90" y="10" class="chip_leg_b" width="8" height="5" />
+function chipLegs( chipContainer, chipWidth, chipHeight, legType ){
   // possible 4 types of chip legs
   // only 2 types are mandatory up+down or left+right
+  // legType can be : vertical, horisontal, full
 
-  const xAxis = 25;
+  const xAxis = 0;
   const yAxis = 0;
   const legBaseWidth = 8;
-  const legBaseHeigth = 5;
+  const legBaseHeigth = 5*2+chipHeight; // leg tip * 2
   const legTipWidth = 4;
-  const legTipHeight = 10;
-  const legCount = (chipWidth / (legBaseWidth * 2)) - 1;
+  const legTipHeight = 30+chipHeight; // leg base + leg tip * 2
+  const legCountHorizontal = (chipWidth / (legBaseWidth * 2)) - 1;
+  const legCountVertical = (chipHeight / (legBaseWidth * 2)) - 1;
   let legY = 10;
-  let legX = 0;
+  let legX = 25;
 
   const svgNS = "http://www.w3.org/2000/svg";
   let chipLegsContainer =  document.createElementNS(svgNS,"svg");
@@ -91,26 +87,50 @@ function chipLegs( chipContainer, chipWidth ){
 
   const svgContainer = document.getElementById("circuitBoard");
 
-  let legBase = document.createElementNS(svgNS,"rect");
-  legBase.setAttributeNS(null,"class","chip_leg_a");
-  legBase.setAttributeNS(null,"x", 10);
-  legBase.setAttributeNS(null,"y", 10);
-  legBase.setAttributeNS(null,"width", legBaseWidth);
-  legBase.setAttributeNS(null,"height", legBaseHeigth);
+  if(true){
 
+  }
 
-  for ( let i=0; i < legCount; i++ ){
-    legX = (legBaseWidth*2)*i;
+  for( let i=0; i < legCountHorizontal; i++ ){
+    legX = (legBaseWidth*2*i)+25;
     let legBase = document.createElementNS(svgNS,"rect");
     legBase.setAttributeNS(null,"class","chip_leg_a");
     legBase.setAttributeNS(null,"x", legX);
     legBase.setAttributeNS(null,"y", legY);
     legBase.setAttributeNS(null,"width", legBaseWidth);
     legBase.setAttributeNS(null,"height", legBaseHeigth);
+
+    let legTip = document.createElementNS(svgNS,"rect");
+    legTip.setAttributeNS(null,"class","chip_leg_b");
+    legTip.setAttributeNS(null,"x", legX+2);
+    legTip.setAttributeNS(null,"y", 0);
+    legTip.setAttributeNS(null,"width", legTipWidth);
+    legTip.setAttributeNS(null,"height", legTipHeight);
+
+    chipLegsContainer.appendChild(legTip);
     chipLegsContainer.appendChild(legBase);
   }
 
+  for( let i=0; i < legCountVertical; i++ ){
+    legX = 10;
+    legY = (legBaseWidth*2*i)+25;
+    let legBase = document.createElementNS(svgNS,"rect");
+    legBase.setAttributeNS(null,"class","chip_leg_a");
+    legBase.setAttributeNS(null,"x", legX);
+    legBase.setAttributeNS(null,"y", legY);
+    legBase.setAttributeNS(null,"width", legBaseHeigth);
+    legBase.setAttributeNS(null,"height", legBaseWidth);
 
+    let legTip = document.createElementNS(svgNS,"rect");
+    legTip.setAttributeNS(null,"class","chip_leg_b");
+    legTip.setAttributeNS(null,"x", 0);
+    legTip.setAttributeNS(null,"y", legY+2);
+    legTip.setAttributeNS(null,"width",  legTipHeight);
+    legTip.setAttributeNS(null,"height", legTipWidth);
+
+    chipLegsContainer.appendChild(legTip);
+    chipLegsContainer.appendChild(legBase);
+  }
 
   chipContainer.appendChild(chipLegsContainer);
 }
