@@ -1,13 +1,15 @@
 
-function createMicrochip(){
+function createMicrochip(options){
   // 2 rectangles
   // 1 line of text
   // 2 or 4 sets of microchip legs
   // Width or height - sizedif should be always dividable by 16
-  const xAxis = 200;
-  const yAxis = 250;
-  const chipWidth = 60;
-  const chipHeight = 60;
+
+  const xAxis = options.xCoord;
+  const yAxis = options.yCoord;
+  const chipWidth = options.width;
+  const chipHeight = options.height;
+  const innerText = options.name;
   const sizeDiff = 10;
   const innerWidth = chipWidth - (sizeDiff*2);
   const innerHeight = chipHeight - (sizeDiff*2);
@@ -18,7 +20,8 @@ function createMicrochip(){
   const containerHeight = chipHeight+chipLegSize*2;
 
   // Fixme - need a robust way of centering thext within the chip
-  const textXaxis = ((chipWidth/2)+textFontSize/2);
+  // const textXaxis = ((chipWidth/2)+textFontSize/2);
+  const textXaxis = 45;
   const textYaxis = ((chipHeight/2)+textFontSize);
 
   const svgNS = "http://www.w3.org/2000/svg";
@@ -26,11 +29,6 @@ function createMicrochip(){
   let chipContainer = document.createElementNS(svgNS,"svg");
   chipContainer.setAttributeNS(null,"x", xAxis);
   chipContainer.setAttributeNS(null,"y", yAxis);
-  chipContainer.setAttributeNS(null,"fill", "none");
-  // chipContainer.setAttributeNS(null,"width", containerWidth);
-  // chipContainer.setAttributeNS(null,"height", containerHeight);
-  // chipContainer.setAttributeNS(null,"stroke", "grey");
-
 
   let outerSection = document.createElementNS(svgNS,"rect");
   outerSection.setAttributeNS(null,"class","chip");
@@ -54,7 +52,7 @@ function createMicrochip(){
   chipText.setAttributeNS(null,"y", textYaxis);
   chipText.setAttributeNS(null,"font-size", textFontSize);
   chipText.setAttributeNS(null,"fill", "orange");
-  chipText.textContent = "A";
+  chipText.textContent = innerText;
 
   chipLegs( chipContainer, chipWidth, chipHeight );
 
@@ -64,35 +62,33 @@ function createMicrochip(){
   svgContainer.appendChild(chipContainer);
 }
 
-function chipLegs( chipContainer, chipWidth, chipHeight, legType ){
-  // possible 4 types of chip legs
-  // only 2 types are mandatory up+down or left+right
-  // legType can be : vertical, horisontal, full
+function createChipLeg( legX, legY, chipHeight){
+  // fixme - logic responsible for creating chip legs needs to be refactored
+}
 
+function chipLegs( chipContainer, chipWidth, chipHeight ){
   const xAxis = 0;
   const yAxis = 0;
   const legBaseWidth = 8;
-  const legBaseHeigth = 5*2+chipHeight; // leg tip * 2
+  const legBaseHeigth = 10+chipHeight; // leg tip * 2
   const legTipWidth = 4;
   const legTipHeight = 30+chipHeight; // leg base + leg tip * 2
+
   const legCountHorizontal = (chipWidth / (legBaseWidth * 2)) - 1;
   const legCountVertical = (chipHeight / (legBaseWidth * 2)) - 1;
   let legY = 10;
   let legX = 25;
 
+  const svgContainer = document.getElementById("circuitBoard");
   const svgNS = "http://www.w3.org/2000/svg";
   let chipLegsContainer =  document.createElementNS(svgNS,"svg");
   chipLegsContainer.setAttributeNS(null,"x", xAxis);
   chipLegsContainer.setAttributeNS(null,"y", yAxis);
 
-  const svgContainer = document.getElementById("circuitBoard");
-
-  if(true){
-
-  }
-
   for( let i=0; i < legCountHorizontal; i++ ){
     legX = (legBaseWidth*2*i)+25;
+
+    createChipLeg( legX, legY, chipHeight );
     let legBase = document.createElementNS(svgNS,"rect");
     legBase.setAttributeNS(null,"class","chip_leg_a");
     legBase.setAttributeNS(null,"x", legX);
@@ -109,6 +105,7 @@ function chipLegs( chipContainer, chipWidth, chipHeight, legType ){
 
     chipLegsContainer.appendChild(legTip);
     chipLegsContainer.appendChild(legBase);
+
   }
 
   for( let i=0; i < legCountVertical; i++ ){
@@ -118,14 +115,14 @@ function chipLegs( chipContainer, chipWidth, chipHeight, legType ){
     legBase.setAttributeNS(null,"class","chip_leg_a");
     legBase.setAttributeNS(null,"x", legX);
     legBase.setAttributeNS(null,"y", legY);
-    legBase.setAttributeNS(null,"width", legBaseHeigth);
+    legBase.setAttributeNS(null,"width", 10+chipWidth);
     legBase.setAttributeNS(null,"height", legBaseWidth);
 
     let legTip = document.createElementNS(svgNS,"rect");
     legTip.setAttributeNS(null,"class","chip_leg_b");
     legTip.setAttributeNS(null,"x", 0);
     legTip.setAttributeNS(null,"y", legY+2);
-    legTip.setAttributeNS(null,"width",  legTipHeight);
+    legTip.setAttributeNS(null,"width",  30+chipWidth);
     legTip.setAttributeNS(null,"height", legTipWidth);
 
     chipLegsContainer.appendChild(legTip);
@@ -137,12 +134,35 @@ function chipLegs( chipContainer, chipWidth, chipHeight, legType ){
 
 function drawCircuit( options ){
   console.log("drawCircuit was called");
-  createMicrochip();
+
+  for( let i = 0; i < options.length; i++ ){
+    createMicrochip(options[i]);
+  }
 }
 
 
 drawCircuit(
-  {
-    "option": "foo"
-  }
+   [
+      {
+        "name": "HTML",
+        "width": 108,
+        "height": 108,
+        "xCoord": 100,
+        "yCoord": 100
+      },
+      {
+        "name": "Webpack",
+        "width": 332,
+        "height": 108,
+        "xCoord": 300,
+        "yCoord": 100
+      },
+      {
+        "name": "CSS",
+        "width": 92,
+        "height": 92,
+        "xCoord": 0,
+        "yCoord": 0
+      },
+    ]
 );
