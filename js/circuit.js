@@ -62,6 +62,41 @@ function createMicrochip(options){
   svgContainer.appendChild(chipContainer);
 }
 
+function microchip (options){
+  const xAxis1 = options.xCoord;
+  const yAxis1 = options.yCoord;
+  const chipWidth = options.width;
+  const chipHeight = options.height;
+  const innerText = options.name;
+  const radius = 8;
+  const sizeDiff = 10;
+  const innerWidth = chipWidth - (sizeDiff*2);
+  const innerHeight = chipHeight - (sizeDiff*2);
+  const textFontSize = 20;
+
+  // Fixme - need a robust way of centering thext within the chip
+  // const textXaxis = ((chipWidth/2)+textFontSize/2);
+  const textXaxis = 45;
+  const textYaxis = ((chipHeight/2)+textFontSize);
+
+  const s = Snap("#board");
+
+  let outerSection = s.rect(xAxis1, yAxis1, chipWidth, chipHeight, radius);
+  outerSection.attr({
+    "class": "chip"
+  });
+
+  let innerSection = s.rect(xAxis1+sizeDiff, yAxis1+sizeDiff, innerWidth, innerHeight, radius);
+  innerSection.attr({
+    "class": "chip_inside"
+  });
+
+  let text = s.text(textXaxis, textYaxis, innerText);
+  text.attr({
+    "class": "chip_text"
+  });
+}
+
 function createChipLeg( legX, legY, chipHeight){
   // fixme - logic responsible for creating chip legs needs to be refactored
 }
@@ -135,8 +170,11 @@ function chipLegs( chipContainer, chipWidth, chipHeight ){
 function drawCircuit( options ){
   console.log("drawCircuit was called");
 
+
   for( let i = 0; i < options.length; i++ ){
     createMicrochip(options[i]);
+
+    microchip(options[i]);
   }
 }
 
