@@ -90,9 +90,39 @@ function legs( chipContainer, groupWidth, groupHeight ){
   chipContainer.prepend(legGroup);
 }
 
+function connector( options ){
+
+  let groupList = [];
+  const s = Snap("#board");
+
+  // for ( let i = 0; i < options.length; i++ ){
+  //   const group = Snap(400,400);
+  //   group.circle(options[i].xCoord, options[i].yCoord, 4);
+  //   s.add(group);
+  // }
+
+  // x coord - start of scss box
+  // y coord - end of webpack box
+
+
+  // Sass to webpack
+  // width: scss x coord + ( webpack x coord + webpack width )
+  // height: (webpack box lower right corner y coord) - (scss box y coord + scss box height)
+
+  const scssWebpack = Snap().attr({x:300,y:250+108}); // x - start of scss box
+
+  scssWebpack.circle(29,30, 4);
+  // <svg x="7" y="79" >
+  //   <circle cx="10" cy="10" r="4" fill="none" stroke="orange" stroke-width="2"/>
+  //   <polyline points="10,14 10,55 150,55 200,0"
+  //   fill="none" stroke="orange" stroke-width="2" />
+  // </svg>
+  s.add(scssWebpack);
+}
+
 function drawCircuit( options ){
   console.log("drawCircuit was called");
-
+  connector(options);
   for( let i = 0; i < options.length; i++ ){
     // createMicrochip(options[i]);
 
@@ -107,7 +137,7 @@ drawCircuit(
         "name": "HTML",
         "width": 108,
         "height": 108,
-        "xCoord": 100,
+        "xCoord": 500,
         "yCoord": 100
       },
       {
@@ -115,14 +145,23 @@ drawCircuit(
         "width": 332,
         "height": 108,
         "xCoord": 300,
-        "yCoord": 100
+        "yCoord": 250
       },
       {
         "name": "CSS",
         "width": 92,
         "height": 92,
-        "xCoord": 0,
-        "yCoord": 0
+        "xCoord": 15,
+        "yCoord": 150,
+        "connect": ["Webpack"]
       },
+      {
+        "name": "SASS",
+        "width": 92,
+        "height": 92,
+        "xCoord": 50,
+        "yCoord": 450,
+        "connect": ["Webpack"]
+      }
     ]
 );
