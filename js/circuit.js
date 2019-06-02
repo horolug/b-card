@@ -92,7 +92,7 @@ function legs( chipContainer, groupWidth, groupHeight ){
 
 function connector( options ){
 
-  let groupList = [];
+  let pairList = [];
   const s = Snap("#board");
 
   // for ( let i = 0; i < options.length; i++ ){
@@ -101,22 +101,36 @@ function connector( options ){
   //   s.add(group);
   // }
 
+  // go through options and create list of connected pairs
+
+  // "name": "SASS",
+  // "width": 92,
+  // "height": 92,
+  // "xCoord": 50,
+  // "yCoord": 450,
+  // "connect": ["Webpack"]
+
+  // {
+  //   "name": "Webpack",
+  //   "width": 332,
+  //   "height": 108,
+  //   "xCoord": 300,
+  //   "yCoord": 250
+  // },
+
+  // Sass to webpack (as example)
   // x coord - start of scss box
   // y coord - end of webpack box
+  // width:  ( webpack x coord + webpack width ) - scss x coord
+  // height: (scss box y coord ) - (webpack y coord right + webpack height)
+  const sccstowW =(300 + 332) - 50;
+  const sccstowH = 450 - (250 + 108);
 
+  const scssWebpack = Snap(sccstowW, sccstowH).attr({x:50+15,y:250+108+15}); // x - start of scss box
+  scssWebpack.rect(0, 0, sccstowW, sccstowH).attr({stroke: "orange", fill: "none"});
+  scssWebpack.circle(30, sccstowH-15, 4);
+  scssWebpack.circle(sccstowW-332+30,15, 4);
 
-  // Sass to webpack
-  // width: scss x coord + ( webpack x coord + webpack width )
-  // height: (webpack box lower right corner y coord) - (scss box y coord + scss box height)
-
-  const scssWebpack = Snap().attr({x:300,y:250+108}); // x - start of scss box
-
-  scssWebpack.circle(29,30, 4);
-  // <svg x="7" y="79" >
-  //   <circle cx="10" cy="10" r="4" fill="none" stroke="orange" stroke-width="2"/>
-  //   <polyline points="10,14 10,55 150,55 200,0"
-  //   fill="none" stroke="orange" stroke-width="2" />
-  // </svg>
   s.add(scssWebpack);
 }
 
