@@ -90,18 +90,29 @@ function legs( chipContainer, groupWidth, groupHeight ){
   chipContainer.prepend(legGroup);
 }
 
+function connectedPairs(options){
+  let pairList = [];
+  for ( let i = 0; i < options.length; i++ ){
+    let chipName = options[i].name;
+    let chipId = chipName.toLowerCase();
+
+    for ( let k = 0; k <  options.length; k++ ){
+      if (options[i].name === options[k].connect ){
+        pairList.push([ options[i], options[k]]);
+      }
+    }
+  }
+  console.log("pairList", pairList);
+}
+
 function connector( options ){
 
-  let pairList = [];
   const s = Snap("#board");
 
-  // for ( let i = 0; i < options.length; i++ ){
-  //   const group = Snap(400,400);
-  //   group.circle(options[i].xCoord, options[i].yCoord, 4);
-  //   s.add(group);
-  // }
-
   // go through options and create list of connected pairs
+  connectedPairs(options);
+
+  // Fixme - pair of connected microchips should be taken from options
 
   // "name": "SASS",
   // "width": 92,
@@ -128,8 +139,37 @@ function connector( options ){
 
   const scssWebpack = Snap(sccstowW, sccstowH).attr({x:50+15,y:250+108+15}); // x - start of scss box
   scssWebpack.rect(0, 0, sccstowW, sccstowH).attr({stroke: "orange", fill: "none"});
+
+  // start of circuit connector
   scssWebpack.circle(30, sccstowH-15, 4);
-  scssWebpack.circle(sccstowW-332+30,15, 4);
+  scssWebpack.circle(46, sccstowH-15, 4);
+
+  // end of circuit connector
+  scssWebpack.circle(sccstowW-332+30, 15, 4);
+  scssWebpack.circle(sccstowW-332+46, 15, 4);
+
+  // connectors should be parallel or perpendicular to x and y
+  // Polyline and start / end areas for connectors should be calculated
+  // dynamically, based on microchip positions
+
+  scssWebpack.polyline(
+    [
+      sccstowW-332+30, 15,
+      sccstowW-332+30, 35,
+      30, 35,
+      30, sccstowH-15
+    ]
+  ).attr({stroke:"black", fill: "none", strokeWidth: "2"});
+
+  scssWebpack.polyline(
+    [
+      sccstowW-332+46, 15,
+      sccstowW-332+46, 40,
+      46, 40,
+      46, sccstowH-15
+    ]
+  ).attr({stroke:"black", fill: "none", strokeWidth: "2"});
+
 
   s.add(scssWebpack);
 }
@@ -138,8 +178,6 @@ function drawCircuit( options ){
   console.log("drawCircuit was called");
   connector(options);
   for( let i = 0; i < options.length; i++ ){
-    // createMicrochip(options[i]);
-
     microchip(options[i]);
   }
 }
@@ -152,7 +190,8 @@ drawCircuit(
         "width": 108,
         "height": 108,
         "xCoord": 500,
-        "yCoord": 100
+        "yCoord": 100,
+        "connect": "Webpack"
       },
       {
         "name": "Webpack",
@@ -167,7 +206,7 @@ drawCircuit(
         "height": 92,
         "xCoord": 15,
         "yCoord": 150,
-        "connect": ["Webpack"]
+        "connect": "Webpack"
       },
       {
         "name": "SASS",
@@ -175,7 +214,7 @@ drawCircuit(
         "height": 92,
         "xCoord": 50,
         "yCoord": 450,
-        "connect": ["Webpack"]
+        "connect": "Webpack"
       }
     ]
 );
