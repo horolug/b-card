@@ -105,16 +105,33 @@ function connectedPairs(options){
   return pairList;
 }
 
-function findPosition( pair ){
-  // will take in the pair of microchips, and put first one with the lowes y coord
+function findPosition( pair, axis ){
+  // will take in the pair of microchips
+  // will retrun only one microchip, that has lower value on y or x axis
   let updatedPair = [];
-  if ( pair[1].yCoord <  pair[0].yCoord ){
-    updatedPair.push(pair[1],  pair[0] );
-  } else {
-    updatedPair = pair;
+  if ( axis = "y" ){
+    if ( pair[1].yCoord <  pair[0].yCoord ){
+      updatedPair.push(pair[1], pair[0]);
+      console.log("for y axis", updatedPair);
+      return pair[1];
+    }
+  }
+  if ( axis = "x" ){
+    if ( pair[1].xCoord <  pair[0].xCoord ){
+      updatedPair.push(pair[1], pair[0]);
+      console.log("for x axis", updatedPair);
+      return pair[1];
+    }
   }
 
-  return updatedPair;
+  return pair[0];
+}
+
+function createCircuitSection( pair ){
+  const sectionXcoord = "";
+  const sectionYcoord = pair[1].Ycoord;
+  const sectionHeight = pair[1].Ycoord - pair[0].Ycoord;
+  const sectionWidth = "";
 }
 
 function connector( options ){
@@ -124,7 +141,8 @@ function connector( options ){
   pairList = connectedPairs(options);
 
   for ( let i = 0; i < pairList.length; i++ ){
-    findPosition(pairList[i]);
+    findPosition(pairList[i], "x");
+    findPosition(pairList[i], "y");
   }
 
   // Fixme - pair of connected microchips should be taken from options
