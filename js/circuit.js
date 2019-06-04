@@ -102,15 +102,30 @@ function connectedPairs(options){
       }
     }
   }
-  console.log("pairList", pairList);
+  return pairList;
+}
+
+function findPosition( pair ){
+  // will take in the pair of microchips, and put first one with the lowes y coord
+  let updatedPair = [];
+  if ( pair[1].yCoord <  pair[0].yCoord ){
+    updatedPair.push(pair[1],  pair[0] );
+  } else {
+    updatedPair = pair;
+  }
+
+  return updatedPair;
 }
 
 function connector( options ){
 
   const s = Snap("#board");
 
-  // go through options and create list of connected pairs
-  connectedPairs(options);
+  pairList = connectedPairs(options);
+
+  for ( let i = 0; i < pairList.length; i++ ){
+    findPosition(pairList[i]);
+  }
 
   // Fixme - pair of connected microchips should be taken from options
 
