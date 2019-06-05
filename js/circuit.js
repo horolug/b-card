@@ -123,38 +123,52 @@ function findPosition( pair, axis ){
   return updatedPairs;
 }
 
+// Calculate height and width for a box containing chip connector circuits
 function sectionHeight( pair ){
-  // (element on top y coord + element on top height) - element on y bottom y coord
   const elOnTop = findPosition(pair, "y");
-  const elOnLeft = findPosition(pair, "x");
-  const sectionHeight = ( elOnTop[0].yCoord
-                      + elOnTop[0].height )
-                      - elOnTop[1].yCoord;
-
-  console.log("elOnTop", elOnTop );
-  console.log(" name 0", elOnTop[0].name);
-  console.log(" y 0", elOnTop[0].yCoord);
-  console.log(" h 0", elOnTop[0].height);
-  console.log(" name 1", elOnTop[1].name);
-  console.log(" y 1", elOnTop[1].yCoord);
+  const sectionHeight = Math.abs (
+    ( elOnTop[0].yCoord + elOnTop[0].height ) - elOnTop[1].yCoord
+  );
 
   return sectionHeight;
 }
 
-function createCircuitSection( pair ){
+function sectionWidth ( pair ){
+  const elOnLeft = findPosition(pair, "x");
+  const sectionWidth = Math.abs (
+    elOnLeft[0].xCoord - (elOnLeft[1].xCoord + elOnLeft[1].width)
+  );
+  return sectionWidth;
+}
+
+// Calculate x and y coordinates for a box containing chip connector circuits
+function sectionYcoord (pair, legHeight){
+  const elOnTop = findPosition(pair, "y");
+  const sectionY = elOnTop[0].yCoord + elOnTop[0].height+legHeight;
+  return sectionY;
+}
+
+function sectionXcoord (pair, legHeight){
+  const elOnLeft = findPosition(pair, "x");
+  const sectionX = elOnLeft[0].xCoord+legHeight;
+  return sectionX;
+}
+
+function createCircuitSection( pair, s ){
   const legHeight = 15;
-  const height = sectionHeight(pair);
-  // const sectionXcoord = findPosition(pair, "x")[0].xCoord + legHeight;
-  // const sectionYcoord = findPosition(pair, "y")[0].yCoord - legHeight;
-  // const sectionWidth = "";
-  // console.log("group " + pair[0].name +" "+ pair[1].name);
-  // console.log("sectionHeight", height);
-  // console.log("x1", pair[0].xCoord);
-  // console.log("x2", pair[1].xCoord);
-  // console.log("y1", pair[0].yCoord);
-  // console.log("y2", pair[1].yCoord);
-  // console.log("sectionXcoord", sectionXcoord);
-  // console.log("sectionYcoord", sectionYcoord);
+  const height = sectionHeight(pair, legHeight);
+  const width = sectionWidth(pair, legHeight);
+  const yCoord = sectionYcoord(pair, legHeight);
+  const xCoord = sectionXcoord(pair, legHeight);
+
+
+  const section = Snap().rect(xCoord, yCoord, width, height).attr({
+    stroke: "blue",
+    fill: "none"
+  });
+
+  s.prepend(section);
+
 }
 
 function connector( options ){
@@ -164,7 +178,7 @@ function connector( options ){
   pairList = connectedPairs(options);
 
   for ( let i = 0; i < pairList.length; i++ ){
-    createCircuitSection(pairList[i]);
+    createCircuitSection(pairList[i], s);
   }
 
   // Fixme - pair of connected microchips should be taken from options
