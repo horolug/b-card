@@ -154,21 +154,91 @@ function sectionXcoord (pair, legHeight){
   return sectionX;
 }
 
+function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
+  // first pair of nodes will start from left to right
+  // method will create 4 nodes - 2 for each microchip
+
+  const chipOnLeft = findPosition(pair, "x");
+  const chipOnTop = findPosition(pair, "y");
+
+  let x1Coord = 0;
+  let x2Coord = 0;
+  let x3Coord = 0;
+  let x4Coord = 0;
+  let y1Coord = 0;
+  let y2Coord = 0;
+  let y3Coord = 0;
+  let y4Coord = 0;
+
+  // is microchip on bottom left - second on top right
+  // is microchip on top left - second on bottom right
+
+  // FIXME - connector nodes to be placed close to the connecting chip 
+  if (chipOnLeft[0].name === chipOnTop[0].name){
+    // top left
+    x1Coord = 14;
+    y1Coord = 14;
+    x3Coord = sectionWidth - chipOnLeft[1].width + 14;
+  } else if ( chipOnLeft[1].name === chipOnTop[0].name ){
+    // top right
+    x1Coord = 14 + sectionWidth - chipOnLeft[1].width; // fixme - 14 - need to properly calculate that value
+    x3Coord = 14;
+
+    y1Coord = 16;
+
+  }
+
+  x2Coord = x1Coord + 16;
+  x4Coord = x3Coord + 16;
+  y2Coord = sectionHeight - 16;
+
+  const boxA = section.rect(0, 0, sectionWidth, sectionHeight).attr({
+    fill: "none",
+    stroke: "orange"
+  });
+
+  // console.log("pair ", pair);
+  const node = section.circle(x1Coord, y1Coord, 4).attr({
+    stroke: "blue",
+    strokeWidth: "2",
+    fill: "none"
+  });
+  const node2 = section.circle(x2Coord, y1Coord, 4).attr({
+    stroke: "blue",
+    strokeWidth: "2",
+    fill: "none"
+  });
+  const node3 = section.circle(x3Coord, y2Coord, 4).attr({
+    stroke: "blue",
+    strokeWidth: "2",
+    fill: "none"
+  });
+  const node4 = section.circle(x4Coord, y2Coord, 4).attr({
+    stroke: "blue",
+    strokeWidth: "2",
+    fill: "none"
+  });
+
+
+
+}
+
 function createCircuitSection( pair, s ){
+
   const legHeight = 15;
   const height = sectionHeight(pair, legHeight);
   const width = sectionWidth(pair, legHeight);
   const yCoord = sectionYcoord(pair, legHeight);
   const xCoord = sectionXcoord(pair, legHeight);
 
-
-  const section = Snap().rect(xCoord, yCoord, width, height).attr({
-    stroke: "blue",
-    fill: "none"
+  const section = Snap(width, height).attr({
+    x: xCoord,
+    y: yCoord
   });
 
-  s.prepend(section);
+  connectorNodes(section, pair, width, height);
 
+  s.prepend(section);
 }
 
 function connector( options ){
@@ -240,7 +310,7 @@ function connector( options ){
   ).attr({stroke:"black", fill: "none", strokeWidth: "2"});
 
 
-  s.add(scssWebpack);
+  // s.add(scssWebpack);
 }
 
 function drawCircuit( options ){
@@ -259,14 +329,14 @@ drawCircuit(
         "width": 108,
         "height": 108,
         "xCoord": 500,
-        "yCoord": 100,
+        "yCoord": 50,
         "connect": "Webpack"
       },
       {
         "name": "Webpack",
         "width": 332,
         "height": 108,
-        "xCoord": 300,
+        "xCoord": 250,
         "yCoord": 250
       },
       {
@@ -274,7 +344,7 @@ drawCircuit(
         "width": 92,
         "height": 92,
         "xCoord": 15,
-        "yCoord": 150,
+        "yCoord": 100,
         "connect": "Webpack"
       },
       {
