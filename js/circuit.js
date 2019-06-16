@@ -173,7 +173,7 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
   // is microchip on bottom left - second on top right
   // is microchip on top left - second on bottom right
 
-  // FIXME - connector nodes to be placed close to the connecting chip 
+  // FIXME - connector nodes to be placed close to the connecting chip
   if (chipOnLeft[0].name === chipOnTop[0].name){
     // top left
     x1Coord = 14;
@@ -183,9 +183,7 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     // top right
     x1Coord = 14 + sectionWidth - chipOnLeft[1].width; // fixme - 14 - need to properly calculate that value
     x3Coord = 14;
-
     y1Coord = 16;
-
   }
 
   x2Coord = x1Coord + 16;
@@ -219,12 +217,70 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     fill: "none"
   });
 
-
+  const endPoints = {
+    start1x: x1Coord,
+    start1y: y1Coord+5,
+    end1x: x3Coord,
+    end1y: y2Coord-5,
+    start2x: x2Coord,
+    start2y: y1Coord+5,
+    end2x: x4Coord,
+    end2y: y2Coord-5
+  }
+  connectorLine(x1Coord, y1Coord, x3Coord, y2Coord, section);
+  connectorLine(x2Coord, y1Coord, x4Coord, y2Coord, section);
+  // connectorLine(endPoints, section);
 
 }
 
-function createCircuitSection( pair, s ){
+function connectorLine(xStart, yStart, xEnd, yEnd, section){
+  console.log("connectorLine was called");
+  console.log("xStart", xStart);
+  console.log("yStart", yStart);
+  console.log("xEnd", xEnd);
+  console.log("yEnd", yEnd);
 
+
+  console.log("flip x ?", xEnd < xStart);
+
+
+  const midpoint = ((yEnd - yStart)/2)-10;
+  console.log("midpoint = ", midpoint);
+  let updatedXstart = xStart-midpoint;
+  let updatedXend = xEnd+midpoint;
+
+  if ( xEnd > xStart ){
+    updatedXstart = xStart+midpoint;
+    updatedXend = xEnd-midpoint;
+  }
+
+  const turn1x = xStart;
+  const turn1y = yStart + 10;
+
+  const turn2x = updatedXstart;
+  const turn2y = turn1y+midpoint;
+
+  const turn3x = updatedXend;
+  const turn3y = turn2y;
+
+  const turn4x = xEnd;
+  const turn4y = yEnd-10;
+
+  const line = section.polyline([
+    xStart, yStart,
+    turn1x, turn1y,
+    turn2x, turn2y,
+    turn3x, turn3y,
+    turn4x, turn4y,
+    xEnd, yEnd
+  ]).attr({
+    stroke: "blue",
+    strokeWidth: "2",
+    fill: "none"
+  });
+}
+
+function createCircuitSection( pair, s ){
   const legHeight = 15;
   const height = sectionHeight(pair, legHeight);
   const width = sectionWidth(pair, legHeight);
@@ -237,80 +293,18 @@ function createCircuitSection( pair, s ){
   });
 
   connectorNodes(section, pair, width, height);
-
   s.prepend(section);
 }
 
 function connector( options ){
 
   const s = Snap("#board");
-
   pairList = connectedPairs(options);
 
   for ( let i = 0; i < pairList.length; i++ ){
     createCircuitSection(pairList[i], s);
   }
 
-  // Fixme - pair of connected microchips should be taken from options
-
-  // "name": "SASS",
-  // "width": 92,
-  // "height": 92,
-  // "xCoord": 50,
-  // "yCoord": 450,
-  // "connect": ["Webpack"]
-
-  // {
-  //   "name": "Webpack",
-  //   "width": 332,
-  //   "height": 108,
-  //   "xCoord": 300,
-  //   "yCoord": 250
-  // },
-
-  // Sass to webpack (as example)
-  // x coord - start of scss box
-  // y coord - end of webpack box
-  // width:  ( webpack x coord + webpack width ) - scss x coord
-  // height: (scss box y coord ) - (webpack y coord right + webpack height)
-  const sccstowW =(300 + 332) - 50;
-  const sccstowH = 450 - (250 + 108);
-
-  const scssWebpack = Snap(sccstowW, sccstowH).attr({x:50+15,y:250+108+15}); // x - start of scss box
-  scssWebpack.rect(0, 0, sccstowW, sccstowH).attr({stroke: "orange", fill: "none"});
-
-  // start of circuit connector
-  scssWebpack.circle(30, sccstowH-15, 4);
-  scssWebpack.circle(46, sccstowH-15, 4);
-
-  // end of circuit connector
-  scssWebpack.circle(sccstowW-332+30, 15, 4);
-  scssWebpack.circle(sccstowW-332+46, 15, 4);
-
-  // connectors should be parallel or perpendicular to x and y
-  // Polyline and start / end areas for connectors should be calculated
-  // dynamically, based on microchip positions
-
-  scssWebpack.polyline(
-    [
-      sccstowW-332+30, 15,
-      sccstowW-332+30, 35,
-      30, 35,
-      30, sccstowH-15
-    ]
-  ).attr({stroke:"black", fill: "none", strokeWidth: "2"});
-
-  scssWebpack.polyline(
-    [
-      sccstowW-332+46, 15,
-      sccstowW-332+46, 40,
-      46, 40,
-      46, sccstowH-15
-    ]
-  ).attr({stroke:"black", fill: "none", strokeWidth: "2"});
-
-
-  // s.add(scssWebpack);
 }
 
 function drawCircuit( options ){
@@ -344,7 +338,7 @@ drawCircuit(
         "width": 92,
         "height": 92,
         "xCoord": 15,
-        "yCoord": 100,
+        "yCoord": 50,
         "connect": "Webpack"
       },
       {
