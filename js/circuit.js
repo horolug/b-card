@@ -229,21 +229,29 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
 function connectorLine(xStart, yStart, xEnd, yEnd, offset, section){
   const midpoint = ((yEnd - yStart-offset)/2)-10;
 
-  console.log("y diff ", yEnd > yStart);
+  console.log("xStart ", xStart);
+  console.log("yStart", yStart);
+  console.log("xEnd", xEnd);
+  console.log("yEnd", yEnd);
+  console.log("=========");
 
   let updatedXstart = xStart-midpoint;
   let updatedXend = xEnd+midpoint;
+  let adjustedOffset = 0;
+
 
   if ( xEnd > xStart ){
+    console.log("xEnd > xStart");
     updatedXstart = xStart+midpoint;
     updatedXend = xEnd-midpoint;
+    adjustedOffset = offset;
   }
 
   const turn1x = xStart;
   const turn1y = yStart + 10;
 
   const turn2x = updatedXstart;
-  const turn2y = turn1y+midpoint;
+  const turn2y = turn1y+midpoint+adjustedOffset;
 
   const turn3x = updatedXend;
   const turn3y = turn2y;
