@@ -154,6 +154,14 @@ function sectionXcoord (pair, legHeight){
   return sectionX;
 }
 
+function placeNode (x, y, section){
+  const node = section.circle(x, y, 4).attr({
+    stroke: "blue",
+    strokeWidth: "2",
+    fill: "none"
+  });
+}
+
 function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
   // first pair of nodes will start from left to right
   // method will create 4 nodes - 2 for each microchip
@@ -196,26 +204,11 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
   });
 
   // console.log("pair ", pair);
-  const node = section.circle(x1Coord, y1Coord, 4).attr({
-    stroke: "blue",
-    strokeWidth: "2",
-    fill: "none"
-  });
-  const node2 = section.circle(x2Coord, y1Coord, 4).attr({
-    stroke: "blue",
-    strokeWidth: "2",
-    fill: "none"
-  });
-  const node3 = section.circle(x3Coord, y2Coord, 4).attr({
-    stroke: "blue",
-    strokeWidth: "2",
-    fill: "none"
-  });
-  const node4 = section.circle(x4Coord, y2Coord, 4).attr({
-    stroke: "blue",
-    strokeWidth: "2",
-    fill: "none"
-  });
+
+  placeNode(x1Coord, y1Coord, section);
+  placeNode(x2Coord, y1Coord, section);
+  placeNode(x3Coord, y2Coord, section);
+  placeNode(x4Coord, y2Coord, section);
 
   const endPoints = {
     start1x: x1Coord,
@@ -227,25 +220,17 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     end2x: x4Coord,
     end2y: y2Coord-5
   }
-  connectorLine(x1Coord, y1Coord, x3Coord, y2Coord, section);
-  connectorLine(x2Coord, y1Coord, x4Coord, y2Coord, section);
-  // connectorLine(endPoints, section);
 
+  // fixme - connector lines should be separated by ~ 5px distance
+  connectorLine(x1Coord, y1Coord+3, x3Coord, y2Coord-3, 4, section);
+  connectorLine(x2Coord, y1Coord+3, x4Coord, y2Coord-3, -4, section);
 }
 
-function connectorLine(xStart, yStart, xEnd, yEnd, section){
-  console.log("connectorLine was called");
-  console.log("xStart", xStart);
-  console.log("yStart", yStart);
-  console.log("xEnd", xEnd);
-  console.log("yEnd", yEnd);
+function connectorLine(xStart, yStart, xEnd, yEnd, offset, section){
+  const midpoint = ((yEnd - yStart-offset)/2)-10;
 
+  console.log("y diff ", yEnd > yStart);
 
-  console.log("flip x ?", xEnd < xStart);
-
-
-  const midpoint = ((yEnd - yStart)/2)-10;
-  console.log("midpoint = ", midpoint);
   let updatedXstart = xStart-midpoint;
   let updatedXend = xEnd+midpoint;
 
