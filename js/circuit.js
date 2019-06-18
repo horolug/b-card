@@ -163,8 +163,6 @@ function placeNode (x, y, section){
 }
 
 function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
-  // first pair of nodes will start from left to right
-  // method will create 4 nodes - 2 for each microchip
 
   const chipOnLeft = findPosition(pair, "x");
   const chipOnTop = findPosition(pair, "y");
@@ -178,13 +176,9 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
   let y3Coord = 0;
   let y4Coord = 0;
 
-  // is microchip on bottom left - second on top right
-  // is microchip on top left - second on bottom right
-
-  // FIXME - connector nodes to be placed close to the connecting chip
   if (chipOnLeft[0].name === chipOnTop[0].name){
     // top left
-    x1Coord = 14;
+    x1Coord = chipOnLeft[0].width - 30;
     y1Coord = 14;
     x3Coord = sectionWidth - chipOnLeft[1].width + 14;
   } else if ( chipOnLeft[1].name === chipOnTop[0].name ){
@@ -192,6 +186,10 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     x1Coord = 14 + sectionWidth - chipOnLeft[1].width; // fixme - 14 - need to properly calculate that value
     x3Coord = 14;
     y1Coord = 16;
+  }
+  if ( chipOnLeft[0].name === chipOnTop[1].name ){
+    // bottom left
+    x3Coord = chipOnLeft[0].width - 30;
   }
 
   x2Coord = x1Coord + 16;
@@ -203,25 +201,11 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     stroke: "orange"
   });
 
-  // console.log("pair ", pair);
-
   placeNode(x1Coord, y1Coord, section);
   placeNode(x2Coord, y1Coord, section);
   placeNode(x3Coord, y2Coord, section);
   placeNode(x4Coord, y2Coord, section);
 
-  const endPoints = {
-    start1x: x1Coord,
-    start1y: y1Coord+5,
-    end1x: x3Coord,
-    end1y: y2Coord-5,
-    start2x: x2Coord,
-    start2y: y1Coord+5,
-    end2x: x4Coord,
-    end2y: y2Coord-5
-  }
-
-  // fixme - connector lines should be separated by ~ 5px distance
   connectorLine(x1Coord, y1Coord+3, x3Coord, y2Coord-3, 4, section);
   connectorLine(x2Coord, y1Coord+3, x4Coord, y2Coord-3, -4, section);
 }
@@ -314,7 +298,7 @@ drawCircuit(
         "name": "Webpack",
         "width": 332,
         "height": 108,
-        "xCoord": 250,
+        "xCoord": 150,
         "yCoord": 250
       },
       {
@@ -330,6 +314,14 @@ drawCircuit(
         "width": 92,
         "height": 92,
         "xCoord": 50,
+        "yCoord": 450,
+        "connect": "Webpack"
+      },
+      {
+        "name": "React",
+        "width": 92,
+        "height": 92,
+        "xCoord": 550,
         "yCoord": 450,
         "connect": "Webpack"
       }
