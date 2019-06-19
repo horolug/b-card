@@ -23,14 +23,32 @@ function microchip (options){
   const group = Snap(groupWidth,groupHeight).attr({x:xAxis,y:yAxis});
 
   let outerSection = group.rect(legsize, legsize, chipWidth, chipHeight, radius);
-  outerSection.attr({
-    "class": "chip"
-  });
+
+  if (options.type === "display"){
+    outerSection.attr({
+      "class": "screen"
+    });
+  } else {
+    outerSection.attr({
+      "class": "chip"
+    });
+  }
+
 
   let innerSection = group.rect(legsize+sizeDiff, legsize+sizeDiff, innerWidth, innerHeight, radius);
-  innerSection.attr({
-    "class": "chip_inside"
-  });
+  if (options.type === "display"){
+    innerSection.attr({
+      "class": "screen_inside"
+    });
+  }else {
+    innerSection.attr({
+      "class": "chip_inside"
+    });
+  }
+
+  // innerSection.attr({
+  //   "class": "chip_inside"
+  // });
 
   let text = group.text(textXaxis, textYaxis, innerText);
   text.attr({
@@ -318,7 +336,7 @@ drawCircuit(
         "width": 108,
         "height": 64,
         "xCoord": 540,
-        "yCoord": 80,
+        "yCoord": 220,
         "connect": "Webpack"
       },
       {
@@ -326,14 +344,14 @@ drawCircuit(
         "width": 188,
         "height": 92,
         "xCoord": 240,
-        "yCoord": 250
+        "yCoord": 350
       },
       {
         "name": "CSS",
         "width": 92,
         "height": 64,
         "xCoord": 15,
-        "yCoord": 120,
+        "yCoord": 220,
         "connect": "Webpack"
       },
       {
@@ -341,7 +359,7 @@ drawCircuit(
         "width": 92,
         "height": 64,
         "xCoord": 50,
-        "yCoord": 450,
+        "yCoord": 550,
         "connect": "Webpack"
       },
       {
@@ -349,7 +367,7 @@ drawCircuit(
         "width": 92,
         "height": 64,
         "xCoord": 550,
-        "yCoord": 450,
+        "yCoord": 520,
         "connect": "Webpack"
       },
       {
@@ -357,8 +375,17 @@ drawCircuit(
         "width": 124,
         "height": 64,
         "xCoord": 272,
-        "yCoord": 80,
+        "yCoord": 150,
         "connect": "Webpack"
+      },
+      {
+        "name": "Hello_world",
+        "type": "display",
+        "width": 512,
+        "height": 64,
+        "xCoord": 80,
+        "yCoord": 0,
+        "connect": ""
       }
     ]
 );
