@@ -91,6 +91,7 @@ function legs( chipContainer, groupWidth, groupHeight ){
 }
 
 function connectedPairs(options){
+  // fixme - allow each chip to be connected to more than 1 chip
   let pairList = [];
   for ( let i = 0; i < options.length; i++ ){
     let chipName = options[i].name;
@@ -162,11 +163,26 @@ function placeNode (x, y, section){
   });
 }
 
-function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
+function placeNodes ( pair, section ){
+  // method will place 4 nodes
+  // method will place 2 connector lines
+  // method will decide where to place nodes ( left, right, middle )
+  // if chip coordinates overlap, connector line will be straight
 
+}
+
+function overlappingChips (pair){
+  if ( Math.abs(pair[0].xCoord - pair[1].xCoord) < pair[1].width ){
+    return true;
+  }
+  return false;
+}
+
+function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
+  overlappingChips(pair);
   const chipOnLeft = findPosition(pair, "x");
   const chipOnTop = findPosition(pair, "y");
-
+  // fixme - allow connect to a middle of a chip if coordinates allow
   let x1Coord = 0;
   let x2Coord = 0;
   let x3Coord = 0;
@@ -192,6 +208,11 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     x3Coord = chipOnLeft[0].width - 30;
   }
 
+  if( overlappingChips (pair) ){
+    x1Coord = chipOnLeft[0].width - (chipOnLeft[0].width/2);
+    x3Coord = sectionWidth - chipOnLeft[1].width + (chipOnLeft[1].width/2);
+  }
+
   x2Coord = x1Coord + 16;
   x4Coord = x3Coord + 16;
   y2Coord = sectionHeight - 16;
@@ -206,11 +227,11 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
   placeNode(x3Coord, y2Coord, section);
   placeNode(x4Coord, y2Coord, section);
 
-  connectorLine(x1Coord, y1Coord+3, x3Coord, y2Coord-3, 4, section);
-  connectorLine(x2Coord, y1Coord+3, x4Coord, y2Coord-3, -4, section);
+  connectorLine(x1Coord, y1Coord+3, x3Coord, y2Coord-3, 4, section, pair);
+  connectorLine(x2Coord, y1Coord+3, x4Coord, y2Coord-3, -4, section, pair);
 }
 
-function connectorLine(xStart, yStart, xEnd, yEnd, offset, section){
+function connectorLine(xStart, yStart, xEnd, yEnd, offset, section, pair){
   const midpoint = ((yEnd - yStart-offset)/2)-10;
   let updatedXstart = xStart-midpoint;
   let updatedXend = xEnd+midpoint+offset;
@@ -225,14 +246,20 @@ function connectorLine(xStart, yStart, xEnd, yEnd, offset, section){
   const turn1x = xStart;
   const turn1y = yStart + 10;
 
-  const turn2x = updatedXstart;
+  let turn2x = updatedXstart;
   const turn2y = turn1y+midpoint+adjustedOffset;
 
-  const turn3x = updatedXend+adjustedOffset;
+  let turn3x = updatedXend+adjustedOffset;
   const turn3y = turn2y;
 
-  const turn4x = xEnd;
+  let turn4x = xEnd;
   const turn4y = yEnd-10;
+
+  if( overlappingChips (pair) ){
+    turn2x = turn1x;
+    turn3x = turn1x;
+    turn4x = turn1x;
+  }
 
   const line = section.polyline([
     xStart, yStart,
@@ -289,30 +316,30 @@ drawCircuit(
       {
         "name": "HTML",
         "width": 108,
-        "height": 108,
-        "xCoord": 500,
-        "yCoord": 50,
+        "height": 64,
+        "xCoord": 540,
+        "yCoord": 80,
         "connect": "Webpack"
       },
       {
         "name": "Webpack",
-        "width": 332,
-        "height": 108,
-        "xCoord": 150,
+        "width": 188,
+        "height": 92,
+        "xCoord": 240,
         "yCoord": 250
       },
       {
         "name": "CSS",
         "width": 92,
-        "height": 92,
+        "height": 64,
         "xCoord": 15,
-        "yCoord": 50,
+        "yCoord": 120,
         "connect": "Webpack"
       },
       {
         "name": "SASS",
         "width": 92,
-        "height": 92,
+        "height": 64,
         "xCoord": 50,
         "yCoord": 450,
         "connect": "Webpack"
@@ -320,9 +347,17 @@ drawCircuit(
       {
         "name": "React",
         "width": 92,
-        "height": 92,
+        "height": 64,
         "xCoord": 550,
         "yCoord": 450,
+        "connect": "Webpack"
+      },
+      {
+        "name": "Javascript",
+        "width": 124,
+        "height": 64,
+        "xCoord": 272,
+        "yCoord": 80,
         "connect": "Webpack"
       }
     ]
