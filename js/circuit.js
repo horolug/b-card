@@ -34,7 +34,6 @@ function microchip (options){
     });
   }
 
-
   let innerSection = group.rect(legsize+sizeDiff, legsize+sizeDiff, innerWidth, innerHeight, radius);
   if (options.type === "display"){
     innerSection.attr({
@@ -45,10 +44,6 @@ function microchip (options){
       "class": "chip_inside"
     });
   }
-
-  // innerSection.attr({
-  //   "class": "chip_inside"
-  // });
 
   let text = group.text(textXaxis, textYaxis, innerText);
   text.attr({
@@ -109,15 +104,15 @@ function legs( chipContainer, groupWidth, groupHeight ){
 }
 
 function connectedPairs(options){
-  // fixme - allow each chip to be connected to more than 1 chip
   let pairList = [];
   for ( let i = 0; i < options.length; i++ ){
     let chipName = options[i].name;
     let chipId = chipName.toLowerCase();
-
     for ( let k = 0; k <  options.length; k++ ){
-      if (options[i].name === options[k].connect ){
-        pairList.push([ options[i], options[k]]);
+      for ( let l = 0; l < options[k].connect.length; l++ ){
+        if ( options[i].name === options[k].connect[l] ){
+          pairList.push([ options[i], options[k]]);
+        }
       }
     }
   }
@@ -337,14 +332,15 @@ drawCircuit(
         "height": 64,
         "xCoord": 540,
         "yCoord": 220,
-        "connect": "Webpack"
+        "connect": ["Webpack", "Hello_world"]
       },
       {
         "name": "Webpack",
         "width": 188,
         "height": 92,
         "xCoord": 240,
-        "yCoord": 350
+        "yCoord": 350,
+        "connect": [""]
       },
       {
         "name": "CSS",
@@ -352,7 +348,7 @@ drawCircuit(
         "height": 64,
         "xCoord": 15,
         "yCoord": 220,
-        "connect": "Webpack"
+        "connect": ["Webpack", "Hello_world"]
       },
       {
         "name": "SASS",
@@ -360,7 +356,7 @@ drawCircuit(
         "height": 64,
         "xCoord": 50,
         "yCoord": 550,
-        "connect": "Webpack"
+        "connect": ["Webpack"]
       },
       {
         "name": "React",
@@ -368,7 +364,7 @@ drawCircuit(
         "height": 64,
         "xCoord": 550,
         "yCoord": 520,
-        "connect": "Webpack"
+        "connect": ["Webpack"]
       },
       {
         "name": "Javascript",
@@ -376,7 +372,7 @@ drawCircuit(
         "height": 64,
         "xCoord": 272,
         "yCoord": 150,
-        "connect": "Webpack"
+        "connect": ["Webpack", "Hello_world"]
       },
       {
         "name": "Hello_world",
@@ -385,7 +381,7 @@ drawCircuit(
         "height": 64,
         "xCoord": 80,
         "yCoord": 0,
-        "connect": ""
+        "connect": [""]
       }
     ]
 );
