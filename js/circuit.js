@@ -116,7 +116,6 @@ function connectedPairs(options){
       }
     }
   }
-  console.log("pairList", pairList);
   return pairList;
 }
 
@@ -135,7 +134,7 @@ function findPosition( pair, axis ){
       updatedPairs = [pair[1], pair[0]];
     }
   }
-  // console.log("updatedPairs", updatedPairs);
+
   return updatedPairs;
 }
 
@@ -152,7 +151,6 @@ function sectionHeight( pair ){
 function sectionWidth ( pair ){
   const elOnLeft = findPosition(pair, "x");
   let sectionWidth = 0;
-  console.log("elOnLeft", elOnLeft);
 
   if ( elOnLeft[0].width+elOnLeft[0].xCoord > elOnLeft[1].width+elOnLeft[1].xCoord ){
     sectionWidth = elOnLeft[0].width;
@@ -196,8 +194,6 @@ function placeNodes ( pair, section ){
 
 function overlappingChips (pair){
   if ( Math.abs(pair[0].xCoord - pair[1].xCoord) < pair[1].width ){
-    console.log("overlapping = ", pair[0].name);
-    console.log("overlapping = ", pair[1].name);
     return true;
   }
   return false;
@@ -224,7 +220,8 @@ function connectorNodes ( section, pair, sectionWidth, sectionHeight ){
     x3Coord = sectionWidth - chipOnLeft[1].width + 14;
   } else if ( chipOnLeft[1].name === chipOnTop[0].name ){
     // top right
-    x1Coord = 14 + sectionWidth - chipOnLeft[1].width; // fixme - 14 - need to properly calculate that value
+    x1Coord = 14 + sectionWidth - chipOnLeft[1].width;
+    // fixme - 14 - need to properly calculate that value
     x3Coord = 14;
     y1Coord = 16;
   }
@@ -280,11 +277,11 @@ function connectorLine(xStart, yStart, xEnd, yEnd, offset, section, pair){
   let turn4x = xEnd;
   const turn4y = yEnd-10;
 
-  if( overlappingChips (pair) ){
-    turn2x = turn1x;
-    turn3x = turn1x;
-    turn4x = turn1x;
-  }
+  // if( overlappingChips (pair) ){
+  //   turn2x = turn1x;
+  //   turn3x = turn1x;
+  //   turn4x = turn1x;
+  // }
 
   const line = section.polyline([
     xStart, yStart,
@@ -328,7 +325,6 @@ function connector( options ){
 }
 
 function drawCircuit( options ){
-  console.log("drawCircuit was called");
   connector(options);
   for( let i = 0; i < options.length; i++ ){
     microchip(options[i]);
@@ -343,14 +339,14 @@ drawCircuit(
         "width": 108,
         "height": 64,
         "xCoord": 540,
-        "yCoord": 220,
+        "yCoord": 180,
         "connect": ["Webpack", "Hello_world"]
       },
       {
         "name": "Webpack",
         "width": 188,
         "height": 92,
-        "xCoord": 240,
+        "xCoord": 340,
         "yCoord": 350,
         "connect": [""]
       },
@@ -383,15 +379,15 @@ drawCircuit(
         "width": 124,
         "height": 64,
         "xCoord": 272,
-        "yCoord": 150,
+        "yCoord": 180,
         "connect": ["Webpack", "Hello_world"]
       },
       {
         "name": "Hello_world",
         "type": "display",
-        "width": 512,
+        "width": 188,
         "height": 64,
-        "xCoord": 80,
+        "xCoord": 160,
         "yCoord": 0,
         "connect": [""]
       }
