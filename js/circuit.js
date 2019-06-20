@@ -116,6 +116,7 @@ function connectedPairs(options){
       }
     }
   }
+  console.log("pairList", pairList);
   return pairList;
 }
 
@@ -134,6 +135,7 @@ function findPosition( pair, axis ){
       updatedPairs = [pair[1], pair[0]];
     }
   }
+  // console.log("updatedPairs", updatedPairs);
   return updatedPairs;
 }
 
@@ -149,9 +151,17 @@ function sectionHeight( pair ){
 
 function sectionWidth ( pair ){
   const elOnLeft = findPosition(pair, "x");
-  const sectionWidth = Math.abs (
-    elOnLeft[0].xCoord - (elOnLeft[1].xCoord + elOnLeft[1].width)
-  );
+  let sectionWidth = 0;
+  console.log("elOnLeft", elOnLeft);
+
+  if ( elOnLeft[0].width+elOnLeft[0].xCoord > elOnLeft[1].width+elOnLeft[1].xCoord ){
+    sectionWidth = elOnLeft[0].width;
+  } else {
+    sectionWidth = Math.abs (
+      elOnLeft[0].xCoord - (elOnLeft[1].xCoord + elOnLeft[1].width)
+    );
+  }
+
   return sectionWidth;
 }
 
@@ -186,6 +196,8 @@ function placeNodes ( pair, section ){
 
 function overlappingChips (pair){
   if ( Math.abs(pair[0].xCoord - pair[1].xCoord) < pair[1].width ){
+    console.log("overlapping = ", pair[0].name);
+    console.log("overlapping = ", pair[1].name);
     return true;
   }
   return false;
