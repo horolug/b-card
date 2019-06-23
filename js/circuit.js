@@ -23,31 +23,23 @@ function microchip (options){
   const group = Snap(groupWidth,groupHeight).attr({x:xAxis,y:yAxis});
 
   let outerSection = group.rect(legsize, legsize, chipWidth, chipHeight, radius);
-
+  let classnamePrefix = "chip"
   if (options.type === "display"){
-    outerSection.attr({
-      "class": "screen"
-    });
-  } else {
-    outerSection.attr({
-      "class": "chip"
-    });
+    classnamePrefix = "screen"
   }
+
+  outerSection.attr({
+    "class": classnamePrefix
+  });
 
   let innerSection = group.rect(legsize+sizeDiff, legsize+sizeDiff, innerWidth, innerHeight, radius);
-  if (options.type === "display"){
-    innerSection.attr({
-      "class": "screen_inside"
-    });
-  }else {
-    innerSection.attr({
-      "class": "chip_inside"
-    });
-  }
+  innerSection.attr({
+    "class": classnamePrefix+"_inside"
+  });
 
   let text = group.text(textXaxis, textYaxis, innerText);
   text.attr({
-    "class": "chip_text"
+    "class": classnamePrefix+"_text"
   });
 
   legs(group, groupWidth, groupHeight);
@@ -234,7 +226,6 @@ function connectorNodes ( section, pair){
 
   if( overlappingChips (pair) ){
     if (chipOnLeft[0].width > chipOnLeft[1].width){
-      console.log("1st element is wider for", pair);
       x1Coord = (chipOnLeft[0].width) / 2;
       x3Coord = Math.abs(sectionXcoord - chipOnLeft[1].xCoord) + chipOnLeft[1].width/2;
     } else {
@@ -352,7 +343,7 @@ drawCircuit(
         "width": 108,
         "height": 64,
         "xCoord": 580,
-        "yCoord": 180,
+        "yCoord": 160,
         "connect": ["Webpack", "Hello_world"]
       },
       {
@@ -360,7 +351,7 @@ drawCircuit(
         "width": 156,
         "height": 60,
         "xCoord": 320,
-        "yCoord": 350,
+        "yCoord": 300,
         "connect": [""]
       },
       {
@@ -376,7 +367,7 @@ drawCircuit(
         "width": 92,
         "height": 60,
         "xCoord": 100,
-        "yCoord": 520,
+        "yCoord": 440,
         "connect": ["Webpack"]
       },
       {
@@ -384,7 +375,7 @@ drawCircuit(
         "width": 92,
         "height": 60,
         "xCoord": 550,
-        "yCoord": 520,
+        "yCoord": 440,
         "connect": ["Webpack"]
       },
       {
@@ -400,7 +391,7 @@ drawCircuit(
         "width": 124,
         "height": 60,
         "xCoord": 340,
-        "yCoord": 480,
+        "yCoord": 440,
         "connect": ["Webpack"]
       },
       {
