@@ -234,11 +234,12 @@ function connectorNodes ( section, pair){
 
   if( overlappingChips (pair) ){
     if (chipOnLeft[0].width > chipOnLeft[1].width){
-      x1Coord = (chipOnLeft[0].width / 2)-8;
-      x3Coord = (sectionXcoord - chipOnLeft[1].xCoord + chipOnLeft[1].width )+9;
+      console.log("1st element is wider for", pair);
+      x1Coord = (chipOnLeft[0].width) / 2;
+      x3Coord = Math.abs(sectionXcoord - chipOnLeft[1].xCoord) + chipOnLeft[1].width/2;
     } else {
       x1Coord = chipOnLeft[0].width - (chipOnLeft[0].width/2);
-      x3Coord = sectionWidth - chipOnLeft[1].width + (chipOnLeft[1].width/2);
+      x3Coord = (Math.abs(sectionXcoord - chipOnLeft[1].xCoord) + chipOnLeft[1].width/2);
     }
   }
 
@@ -261,11 +262,12 @@ function connectorNodes ( section, pair){
 }
 
 function connectorLine(xStart, yStart, xEnd, yEnd, offset, section, pair){
+  const chipOnLeft = findPosition(pair, "x");
+  const chipOnTop = findPosition(pair, "y");
   const midpoint = ((yEnd - yStart-offset)/2)-10;
   let updatedXstart = xStart-midpoint;
   let updatedXend = xEnd+midpoint+offset;
   let adjustedOffset = 0;
-
   if ( xEnd > xStart ){
     updatedXstart = xStart+midpoint+offset;
     updatedXend = xEnd-midpoint-offset;
@@ -283,6 +285,15 @@ function connectorLine(xStart, yStart, xEnd, yEnd, offset, section, pair){
 
   let turn4x = xEnd;
   const turn4y = yEnd-10;
+
+  if( overlappingChips (pair) ){
+    const coordDiff =  (chipOnLeft[0].width/2 + chipOnLeft[0].xCoord) - (chipOnLeft[1].width/2 + chipOnLeft[1].xCoord);
+    if ( Math.abs(coordDiff) <  midpoint ){
+      turn2x =  turn1x;
+      turn3x = turn1x;
+      turn4x = turn1x;
+    }
+  }
 
   const line = section.polyline([
     xStart, yStart,
@@ -346,16 +357,16 @@ drawCircuit(
       },
       {
         "name": "Webpack",
-        "width": 188,
-        "height": 92,
-        "xCoord": 340,
+        "width": 156,
+        "height": 60,
+        "xCoord": 320,
         "yCoord": 350,
         "connect": [""]
       },
       {
         "name": "CSS",
         "width": 92,
-        "height": 64,
+        "height": 60,
         "xCoord": 15,
         "yCoord": 160,
         "connect": ["Webpack", "Hello_world"]
@@ -363,15 +374,15 @@ drawCircuit(
       {
         "name": "SASS",
         "width": 92,
-        "height": 64,
-        "xCoord": 150,
-        "yCoord": 550,
+        "height": 60,
+        "xCoord": 100,
+        "yCoord": 520,
         "connect": ["Webpack"]
       },
       {
         "name": "React",
         "width": 92,
-        "height": 64,
+        "height": 60,
         "xCoord": 550,
         "yCoord": 520,
         "connect": ["Webpack"]
@@ -379,19 +390,28 @@ drawCircuit(
       {
         "name": "Javascript",
         "width": 124,
-        "height": 64,
-        "xCoord": 220,
+        "height": 60,
+        "xCoord": 200,
         "yCoord": 140,
         "connect": ["Webpack", "Hello_world"]
       },
       {
+        "name": "Javascript",
+        "width": 124,
+        "height": 60,
+        "xCoord": 340,
+        "yCoord": 480,
+        "connect": ["Webpack"]
+      },
+      {
         "name": "Hello_world",
         "type": "display",
-        "width": 364,
+        "width": 380,
         "height": 64,
         "xCoord": 161,
         "yCoord": 0,
         "connect": [""]
-      }
+      },
+
     ]
 );
