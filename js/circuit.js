@@ -3,7 +3,7 @@ function microchip (options){
   const yAxis = options.yCoord;
   const chipWidth = options.width;
   const chipHeight = options.height;
-  const innerText = options.name;
+  const innerText = options.text;
   const radius = 8;
   const sizeDiff = 10;
   const innerWidth = chipWidth - (sizeDiff*2);
@@ -45,6 +45,23 @@ function microchip (options){
   legs(group, groupWidth, groupHeight);
 
   s.add(group);
+  group.hover(hoverIn, hoverOut, group, actionEnd);
+}
+
+function hoverIn(){
+  console.log("hover in called", this);
+}
+
+function hoverOut(){
+  console.log("hover out called");
+}
+
+// function actionStart(){
+//   console.log("action start called");
+// }
+//
+function actionEnd(){
+  console.log("action end called");
 }
 
 function legs( chipContainer, groupWidth, groupHeight ){
@@ -340,6 +357,8 @@ drawCircuit(
    [
       {
         "name": "HTML",
+        "text": "HTML",
+        "hover": "I do HTML",
         "width": 108,
         "height": 64,
         "xCoord": 580,
@@ -348,6 +367,8 @@ drawCircuit(
       },
       {
         "name": "Webpack",
+        "text": "Webpack",
+        "hover": "I use Webpack",
         "width": 156,
         "height": 60,
         "xCoord": 320,
@@ -356,6 +377,8 @@ drawCircuit(
       },
       {
         "name": "CSS",
+        "text": "min.css",
+        "hover": "I do CSS",
         "width": 92,
         "height": 60,
         "xCoord": 15,
@@ -364,6 +387,8 @@ drawCircuit(
       },
       {
         "name": "SASS",
+        "text": "SASS",
+        "hover": "I do SASS",
         "width": 92,
         "height": 60,
         "xCoord": 100,
@@ -372,6 +397,8 @@ drawCircuit(
       },
       {
         "name": "React",
+        "text": "React",
+        "hover": "I do react",
         "width": 92,
         "height": 60,
         "xCoord": 550,
@@ -380,6 +407,8 @@ drawCircuit(
       },
       {
         "name": "Javascript",
+        "text": "min.js",
+        "hover": "I do JS",
         "width": 124,
         "height": 60,
         "xCoord": 200,
@@ -388,6 +417,8 @@ drawCircuit(
       },
       {
         "name": "Javascript",
+        "text" : "Javascript",
+        "hover" : "I do vanilla JS",
         "width": 124,
         "height": 60,
         "xCoord": 340,
@@ -396,6 +427,7 @@ drawCircuit(
       },
       {
         "name": "Hello_world",
+        "text": "Hello world",
         "type": "display",
         "width": 380,
         "height": 64,
