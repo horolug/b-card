@@ -18,9 +18,8 @@
   <![endif]-->
 
   <!-- Add your site or application content here -->
-  <header>
+  <header id="header">
     header
-
     <nav>
       <ul class="nav_list">
           <li class="nav_list_item"><a href="#home">Home </a></li>
@@ -32,9 +31,20 @@
   </header>
   <div>
     <div id="home" class="card">
+      <div class="hero_box" id="hero_box">
 
-      <h1>Hero message</h1>
-
+<pre id="typewriter">
+  <span class="var-highlight">const</span> developer = {
+    name: <span class="string-highlight">'Alex'</span>,
+    type: <span class="string-highlight">'Front-end'</span>,
+    skills:[
+      <span class="string-highlight">'JavaScript'</span>,
+      <span class="string-highlight">'HTML'</span>,
+      <span class="string-highlight">'CSS'</span>
+    ]
+  };
+</pre>
+      </div>
     </div>
     <div id="about" class="card">
       <p>Nulla efficitur convallis hendrerit. Sed convallis cursus nunc quis vulputate. Nam ut suscipit urna. Pellentesque sit amet ipsum dapibus, commodo elit ac, congue velit. Mauris consectetur dictum dolor. In eget purus justo. Fusce eu dui magna. Vivamus consequat viverra tortor, vel mollis sapien mattis id. Nullam pretium arcu enim, vitae posuere purus rutrum et. Donec tincidunt in purus quis interdum. Pellentesque tincidunt, tellus ut vehicula ultrices, dolor nulla semper risus, elementum aliquam urna enim et sapien. Integer tempus nulla libero, ac sagittis nisl euismod quis.
@@ -57,5 +67,6 @@
   </footer>
 
   <script src="../js/script.js"></script>
+
 </body>
 </html>
